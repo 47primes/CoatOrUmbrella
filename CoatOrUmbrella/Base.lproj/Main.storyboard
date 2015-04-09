@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="6751" systemVersion="13F34" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="0HA-Oy-gO1">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6736"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+    </dependencies>
+    <scenes>
+        <!--View Controller-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
+                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="umbrella-512.png" translatesAutoresizingMaskIntoConstraints="NO" id="Tiz-CK-c12">
+                                <rect key="frame" x="426" y="236" width="128" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="UV3-hb-Scl"/>
+                                    <constraint firstAttribute="width" constant="128" id="oCe-uH-uXw"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" image="coat-512.png" translatesAutoresizingMaskIntoConstraints="NO" id="qfm-Kl-JMQ">
+                                <rect key="frame" x="46" y="236" width="128" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="AHd-9p-hP3"/>
+                                    <constraint firstAttribute="width" constant="128" id="xjP-hO-CHA"/>
+                                </constraints>
+                            </imageView>
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uXv-dw-aW9">
+                                <rect key="frame" x="0.0" y="64" width="600" height="44"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="uXv-dw-aW9" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="25L-Ow-6BF"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="uXv-dw-aW9" secondAttribute="trailing" constant="-16" id="E3p-O5-QHU"/>
+                            <constraint firstItem="uXv-dw-aW9" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="QTS-mm-Ptz"/>
+                            <constraint firstItem="qfm-Kl-JMQ" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="45" id="r5a-UQ-amp"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="Tiz-CK-c12" secondAttribute="trailing" constant="30" id="tun-jI-n6p"/>
+                        </constraints>
+                    </view>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" id="ogc-iF-3yz"/>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="coatImage" destination="qfm-Kl-JMQ" id="bML-m6-Mf9"/>
+                        <outlet property="headerView" destination="uXv-dw-aW9" id="0se-FL-Go3"/>
+                        <outlet property="umbrellaImage" destination="Tiz-CK-c12" id="Kfg-DZ-psq"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="952" y="111"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="UYB-EJ-tSr">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="0HA-Oy-gO1" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="afI-RA-JI6">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="Tal-Ya-N8o"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="z94-4O-3uH" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="140" y="772"/>
+        </scene>
+    </scenes>
+    <resources>
+        <image name="coat-512.png" width="512" height="512"/>
+        <image name="umbrella-512.png" width="512" height="512"/>
+    </resources>
+</document>
