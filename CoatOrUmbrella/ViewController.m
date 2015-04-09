@@ -8,6 +8,7 @@
 
 #import "ViewController.h"
 #import "CitySearchResultsController.h"
+#import "AFHTTPRequestOperationManager.h"
 
 @interface ViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate>
 
@@ -64,23 +65,12 @@
     self.definesPresentationContext = YES;
 }
 
-#pragma mark - UISearchControllerDelegate
-
-- (void)didDismissSearchController:(UISearchController *)searchController
-{
-//    NSString *city = searchController.searchBar.text;
-}
 
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
     self.searchController.searchBar.text = nil;
-}
-
-- (void)searchBarCancelButtonClicked:(UISearchBar *)searchBar
-{
-    
 }
 
 
@@ -129,7 +119,9 @@
     NSString *city = [self.searchResults objectAtIndex:indexPath.row];
     self.searchController.active = NO;
     self.searchController.searchBar.text = city;
+    [self getWeatherData];
 }
+
 
 #pragma mark - City search
 
@@ -151,6 +143,19 @@
     
     self.searchResults = [searchSet array];
     [self.searchResultsController.tableView reloadData];
+}
+
+
+#pragma mark - Weather API
+
+- (void)getWeatherData
+{
+    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
+    [manager GET:@"http://api.openweathermap.org/data/2.5/find?q=Austin,TX&units=imperial" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
+        NSLog(@"JSON: %@", responseObject);
+    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
+        NSLog(@"Error: %@", error);
+    }];
 }
 
 @end
