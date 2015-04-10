@@ -15,10 +15,11 @@
     float _lowTemp;
 }
 
-- (id)initWithCity:(NSString *)city
+- (id) initWithLatitude:(float)latitude andLongitude:(float)longitude
 {
     if (self = [super init]) {
-        _city = city;
+        _latitude = latitude;
+        _longitude = longitude;
         return self;
     } else {
         return nil;
@@ -38,19 +39,15 @@
         message = @"Neither.";
     }
     
-    return [NSString stringWithFormat: @"%@ High of %.02f °F. Low of %.02f °F. %@", message, _highTemp, _lowTemp, _rainDescription];
+    return [NSString stringWithFormat: @"%@ Low of %.02f °F. %@", message, _lowTemp, _rainDescription];
 }
 
 - (void)checkWeather:(void(^)(void))callback
 {
     _error = nil;
-    if (self.city.length < 1) {
-        return;
-    }
     
     AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    NSDictionary *parameters = @{@"q": self.city, @"units": @"imperial"};
-    [manager GET:@"http://api.openweathermap.org/data/2.5/find" parameters:parameters success:^(AFHTTPRequestOperation *operation, id responseObject) {
+    [manager GET:@"http://api.openweathermap.org/data/2.5/find" parameters:[self requestParameters] success:^(AFHTTPRequestOperation *operation, id responseObject) {
         NSArray *lists = [responseObject objectForKey:@"list"];
         if (lists.count > 0) {
             NSDictionary *list = [[responseObject objectForKey:@"list"] objectAtIndex:0];
@@ -58,6 +55,9 @@
             
             _highTemp = [[[list objectForKey:@"main"] valueForKey:@"temp_max"] floatValue];
             _lowTemp = [[[list objectForKey:@"main"] valueForKey:@"temp_min"] floatValue];
+            if (!_city) {
+                _city = [list objectForKey:@"name"];
+            }
             
             _rainDescription = [weather valueForKey:@"description"];
         } else {
@@ -68,6 +68,17 @@
         _error = error;
         callback();
     }];
+}
+
+- (NSDictionary *)requestParameters
+{
+    NSDictionary *parameters;
+    if (self.city.length > 0) {
+        parameters = @{@"q": self.city, @"units": @"imperial"};
+    } else {
+        parameters = @{@"lat": [NSNumber numberWithFloat:self.latitude], @"lon": [NSNumber numberWithFloat:self.longitude], @"units": @"imperial"};
+    }
+    return parameters;
 }
 
 - (BOOL)needsCoat

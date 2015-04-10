@@ -9,14 +9,16 @@
 #import "ViewController.h"
 #import "CitySearchResultsController.h"
 #import "Meteorologist.h"
+#import <CoreLocation/CoreLocation.h>
 
-@interface ViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate>
+@interface ViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate, CLLocationManagerDelegate>
 
 @property (nonatomic) UISearchController *searchController;
 @property (nonatomic) CitySearchResultsController *searchResultsController;
 @property NSDictionary *cityDictionary;
 @property NSArray *searchResults;
 @property Meteorologist *m;
+@property CLLocationManager *locationManager;
 
 @end
 
@@ -32,6 +34,11 @@
     
     _searchResults = [NSArray array];
     _m = [[Meteorologist alloc] init];
+    _locationManager = [[CLLocationManager alloc] init];
+    _locationManager.delegate = self;
+    if ([CLLocationManager locationServicesEnabled]) {
+        [_locationManager startMonitoringSignificantLocationChanges];
+    }
 }
 
 - (void)didReceiveMemoryWarning
@@ -177,6 +184,8 @@
         UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[self.m.error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
         [alertView show];
     } else {
+        self.searchController.active = NO;
+        self.searchController.searchBar.text = self.m.city;
         self.forcastLabel.text = [self.m description];
         if ([self.m needsCoat]) {
             [self animateCoat];
@@ -211,6 +220,27 @@
 {
     self.coatImage.alpha = 0;
     self.umbrellaImage.alpha = 0;
+}
+
+
+#pragma mark - CLLocationManagerDelegate
+
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray *)locations
+{
+    CLLocation *location = [locations lastObject];
+    NSDate *eventDate = location.timestamp;
+    NSTimeInterval howRecent = [eventDate timeIntervalSinceNow];
+    if (abs(howRecent) < 15.0) {
+        self.m.latitude = location.coordinate.latitude;
+        self.m.longitude = location.coordinate.longitude;
+        [self getWeatherData];
+    }
+}
+
+- (void)stopSignificantChangesUpdates
+{
+    [self.locationManager stopUpdatingLocation];
+    self.locationManager = nil;
 }
 
 @end

@@ -11,9 +11,11 @@
 @interface Meteorologist : NSObject
 
 @property NSString *city;
+@property float latitude;
+@property float longitude;
 @property (readonly) NSError *error;
 
-- (id) initWithCity:(NSString *)city;
+- (id) initWithLatitude:(float)latitude andLongitude:(float)longitude;
 - (NSString *)description;
 - (void)checkWeather:(void(^)(void))callback;
 - (BOOL)needsCoat;
