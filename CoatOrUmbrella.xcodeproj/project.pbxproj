@@ -11,6 +11,7 @@
 		27B9E1B91AD598650026DB21 /* coat-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B9E1B71AD598650026DB21 /* coat-512.png */; };
 		27B9E1BA1AD598650026DB21 /* umbrella-512.png in Resources */ = {isa = PBXBuildFile; fileRef = 27B9E1B81AD598650026DB21 /* umbrella-512.png */; };
 		27B9E1C01AD638370026DB21 /* CitySearchResultsController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27B9E1BF1AD638370026DB21 /* CitySearchResultsController.m */; };
+		27D75A261AD701AB00FBF21A /* Meteorologist.m in Sources */ = {isa = PBXBuildFile; fileRef = 27D75A251AD701AB00FBF21A /* Meteorologist.m */; };
 		27DEC0851AD391A80029CB97 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DEC0841AD391A80029CB97 /* main.m */; };
 		27DEC0881AD391A80029CB97 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DEC0871AD391A80029CB97 /* AppDelegate.m */; };
 		27DEC08B1AD391A80029CB97 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 27DEC08A1AD391A80029CB97 /* ViewController.m */; };
@@ -39,6 +40,8 @@
 		27B9E1B81AD598650026DB21 /* umbrella-512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "umbrella-512.png"; sourceTree = "<group>"; };
 		27B9E1BE1AD638370026DB21 /* CitySearchResultsController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CitySearchResultsController.h; sourceTree = "<group>"; };
 		27B9E1BF1AD638370026DB21 /* CitySearchResultsController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CitySearchResultsController.m; sourceTree = "<group>"; };
+		27D75A241AD701AB00FBF21A /* Meteorologist.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Meteorologist.h; sourceTree = "<group>"; };
+		27D75A251AD701AB00FBF21A /* Meteorologist.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Meteorologist.m; sourceTree = "<group>"; };
 		27DEC07F1AD391A80029CB97 /* CoatOrUmbrella.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CoatOrUmbrella.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		27DEC0831AD391A80029CB97 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		27DEC0841AD391A80029CB97 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -83,6 +86,24 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		27D75A181AD6F5EB00FBF21A /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				27DEC0861AD391A80029CB97 /* AppDelegate.h */,
+				27DEC0871AD391A80029CB97 /* AppDelegate.m */,
+			);
+			name = Application;
+			sourceTree = "<group>";
+		};
+		27D75A231AD7016400FBF21A /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				27D75A241AD701AB00FBF21A /* Meteorologist.h */,
+				27D75A251AD701AB00FBF21A /* Meteorologist.m */,
+			);
+			name = Models;
+			sourceTree = "<group>";
+		};
 		27DEC0761AD391A80029CB97 = {
 			isa = PBXGroup;
 			children = (
@@ -106,12 +127,12 @@
 		27DEC0811AD391A80029CB97 /* CoatOrUmbrella */ = {
 			isa = PBXGroup;
 			children = (
+				27D75A231AD7016400FBF21A /* Models */,
+				27D75A181AD6F5EB00FBF21A /* Application */,
 				27DEC0AB1AD391D00029CB97 /* Storyboards */,
 				27DEC0AA1AD391C60029CB97 /* Assets */,
 				27DEC0A91AD391BD0029CB97 /* View Controllers */,
 				27DEC0A81AD391B10029CB97 /* Views */,
-				27DEC0861AD391A80029CB97 /* AppDelegate.h */,
-				27DEC0871AD391A80029CB97 /* AppDelegate.m */,
 				27DEC0821AD391A80029CB97 /* Supporting Files */,
 			);
 			path = CoatOrUmbrella;
@@ -330,6 +351,7 @@
 				27DEC08B1AD391A80029CB97 /* ViewController.m in Sources */,
 				27B9E1C01AD638370026DB21 /* CitySearchResultsController.m in Sources */,
 				27DEC0881AD391A80029CB97 /* AppDelegate.m in Sources */,
+				27D75A261AD701AB00FBF21A /* Meteorologist.m in Sources */,
 				27DEC0851AD391A80029CB97 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

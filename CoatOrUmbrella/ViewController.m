@@ -8,14 +8,15 @@
 
 #import "ViewController.h"
 #import "CitySearchResultsController.h"
-#import "AFHTTPRequestOperationManager.h"
+#import "Meteorologist.h"
 
 @interface ViewController () <UISearchBarDelegate, UISearchControllerDelegate, UISearchResultsUpdating, UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic) UISearchController *searchController;
 @property (nonatomic) CitySearchResultsController *searchResultsController;
-@property NSDictionary *cities;
+@property NSDictionary *cityDictionary;
 @property NSArray *searchResults;
+@property Meteorologist *m;
 
 @end
 
@@ -27,9 +28,10 @@
     
     [super viewDidLoad];
     [self buildSearchController];
-    [self loadCities];
+    [self loadCityDictionary];
     
     _searchResults = [NSArray array];
+    _m = [[Meteorologist alloc] init];
 }
 
 - (void)didReceiveMemoryWarning
@@ -37,12 +39,12 @@
     [super didReceiveMemoryWarning];
 }
 
-- (void)loadCities
+- (void)loadCityDictionary
 {
     NSString *filePath = [[NSBundle mainBundle] pathForResource:@"zip_codes" ofType:@"json"];
     NSData *data = [NSData dataWithContentsOfFile:filePath];
     NSError *jsonError;
-    self.cities = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
+    _cityDictionary = [NSJSONSerialization JSONObjectWithData:data options:0 error:&jsonError];
 }
 
 - (void)buildSearchController
@@ -52,7 +54,7 @@
     self.searchResultsController.tableView.dataSource = self;
     
     _searchController = [[UISearchController alloc] initWithSearchResultsController:self.searchResultsController];
-    self.searchController.searchBar.frame = CGRectMake(0, 0, self.view.frame.size.width, 44);
+    self.searchController.searchBar.frame = self.view.frame;
     [self.searchController.searchBar addConstraints:self.headerView.constraints];
     self.searchController.delegate = self;
     self.searchController.searchResultsUpdater = self;
@@ -65,12 +67,25 @@
     self.definesPresentationContext = YES;
 }
 
+- (void)resetSearchBar
+{
+    self.searchController.active = NO;
+    self.searchController.searchBar.text = self.m.city;
+}
 
 #pragma mark - UISearchBarDelegate
 
 - (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar
 {
+    [self hideImages];
     self.searchController.searchBar.text = nil;
+    self.forcastLabel.text = nil;
+}
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    self.m.city = searchBar.text;
+    [self getWeatherData];
 }
 
 
@@ -116,9 +131,7 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *city = [self.searchResults objectAtIndex:indexPath.row];
-    self.searchController.active = NO;
-    self.searchController.searchBar.text = city;
+    self.m.city = [self.searchResults objectAtIndex:indexPath.row];
     [self getWeatherData];
 }
 
@@ -131,9 +144,9 @@
     
     NSMutableOrderedSet *searchSet = [NSMutableOrderedSet orderedSet];
     
-    for (NSString *key in self.cities)
+    for (NSString *key in self.cityDictionary)
     {
-        NSString *value = [self.cities objectForKey:key];
+        NSString *value = [self.cityDictionary objectForKey:key];
         
         if ([key rangeOfString:searchText].location != NSNotFound || [[value lowercaseString] rangeOfString:searchText].location != NSNotFound)
         {
@@ -150,12 +163,54 @@
 
 - (void)getWeatherData
 {
-    AFHTTPRequestOperationManager *manager = [AFHTTPRequestOperationManager manager];
-    [manager GET:@"http://api.openweathermap.org/data/2.5/find?q=Austin,TX&units=imperial" parameters:nil success:^(AFHTTPRequestOperation *operation, id responseObject) {
-        NSLog(@"JSON: %@", responseObject);
-    } failure:^(AFHTTPRequestOperation *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+    [self resetSearchBar];
+    [self.spinner startAnimating];
+    [self.m checkWeather:^{
+        [self handleWeatherResponse];
     }];
+}
+
+- (void)handleWeatherResponse
+{
+    [self.spinner stopAnimating];
+    if (self.m.error) {
+        UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@"Error" message:[self.m.error localizedDescription] delegate:self cancelButtonTitle:@"OK" otherButtonTitles:nil];
+        [alertView show];
+    } else {
+        self.forcastLabel.text = [self.m description];
+        if ([self.m needsCoat]) {
+            [self animateCoat];
+        }
+        if ([self.m needsUmbrella]) {
+            [self animateUmbrella];
+        }
+    }
+}
+
+- (void)animateCoat
+{
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.coatImage.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished) {
+                     }];
+}
+
+- (void)animateUmbrella
+{
+    [UIView animateWithDuration:1 delay:0 options:UIViewAnimationOptionBeginFromCurrentState
+                     animations:^{
+                         self.umbrellaImage.alpha = 1.0;
+                     }
+                     completion:^(BOOL finished) {
+                     }];
+}
+
+- (void)hideImages
+{
+    self.coatImage.alpha = 0;
+    self.umbrellaImage.alpha = 0;
 }
 
 @end

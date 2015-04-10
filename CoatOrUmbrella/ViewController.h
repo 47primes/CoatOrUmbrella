@@ -10,12 +10,12 @@
 
 @interface ViewController : UIViewController <UISearchBarDelegate, UISearchControllerDelegate>
 
-@property IBOutlet UILabel *temperatureLabel;
-@property IBOutlet UILabel *rainChanceLabel;
+@property IBOutlet UILabel *forcastLabel;
 @property IBOutlet UIImageView *coatImage;
 @property IBOutlet UIImageView *umbrellaImage;
 @property IBOutlet UIBarButtonItem *configButton;
 @property IBOutlet UIView *headerView;
+@property IBOutlet UIActivityIndicatorView *spinner;
 
 @end
 
